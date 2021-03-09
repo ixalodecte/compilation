@@ -13,7 +13,6 @@ expression:
     expression PLUS expression    {}
     | expression MOINS expression   {}
     | expression FOIS expression    {}
-    | expression expression     {}
     | GPAREN expression DPAREN      {}
     | MOINS expression %prec UMOINS {}
     | NOMBRE                        {}
