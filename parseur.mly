@@ -1,5 +1,5 @@
 %token <int> NOMBRE
-%token PLUS MOINS FOIS GPAREN DPAREN EOL
+%token PLUS MOINS FOIS GPAREN DPAREN PT_VIRG
 %left PLUS MOINS
 %left FOIS
 %nonassoc UMOINS
@@ -8,7 +8,7 @@
 %start main
 %%
 main:
-    expression EOL                { $1 }
+    expression PT_VIRG                { $1 }
     ;
 expression:
     expression PLUS expression    { $1+$3}

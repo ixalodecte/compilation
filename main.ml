@@ -1,6 +1,7 @@
 let _ = 									(*main en OCaml*)
+	let channel = if (Array.length Sys.argv)>1 then (open_in Sys.argv.(1)) else (stdin) in
 	try
-		let lexbuf = Lexing.from_channel stdin in 	(*lexeur lancé sur stdin*)
+		let lexbuf = Lexing.from_channel channel in 	(*lexeur lancé sur stdin*)
 		while true do 							(*one ne s'arrête pas*)
 			Parseur.main Lexeur.token lexbuf |> Printf.printf "%i\n%!"; 		(*parseur une ligne*)
 		done
