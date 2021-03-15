@@ -1,4 +1,4 @@
-%token NOMBRE PLUS MOINS FOIS GPAREN DPAREN PT_VIRG
+%token NOMBRE PLUS MOINS FOIS DIV GPAREN DPAREN PT_VIRG
 %left PLUS MOINS
 %left FOIS
 %nonassoc UMOINS
@@ -13,6 +13,7 @@ expression:
     expression PLUS expression    {}
     | expression MOINS expression   {}
     | expression FOIS expression    {}
+    | expression DIV expression     {}
     | GPAREN expression DPAREN      {}
     | MOINS expression %prec UMOINS {}
     | NOMBRE                        {}

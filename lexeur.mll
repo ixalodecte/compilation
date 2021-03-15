@@ -12,6 +12,7 @@ rule token = parse
 		| '+' 						{ PLUS }
 		| '-' 						{ MOINS }
 		| '*' 						{ FOIS }
+		| '/' 						{ DIV }
 		| '(' 						{ GPAREN }
 		| ')'						{ DPAREN }
 		| eof 					{ raise Eof }
