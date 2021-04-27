@@ -5,7 +5,7 @@ type expression_a =
     | Mult  of expression_a * expression_a
     | Div   of expression_a * expression_a
     | Neg   of expression_a
-    | Num   of int
+    | Num   of float
 ;;
 
 
@@ -19,7 +19,7 @@ and print_AST form = let open Format in function
     | Mult  (g,d) -> print_binaire form "Mult" g d
     | Div   (g,d) -> print_binaire form "Div" g d
     | Neg    e    -> fprintf form "@[<2>%s@ %a@]" "Neg" print_AST e
-    | Num    n    -> fprintf form "@[<2>%s@ %i@]" "Num" n
+    | Num    n    -> fprintf form "@[<2>%s@ %f@]" "Num" n
 ;;
 
 
@@ -29,7 +29,8 @@ let print_gen_code expression =
       | Plus  (g,d) -> Printf.sprintf "%s\n%s\n%s" (print_AST_code g) (print_AST_code d) "AddiNb"
       | Moins (g,d) -> Printf.sprintf "%s\n%s\n%s" (print_AST_code g) (print_AST_code d) "SubiNb"
       | Mult  (g,d) -> Printf.sprintf "%s\n%s\n%s" (print_AST_code g) (print_AST_code d) "MultNb"
+      | Div  (g,d) -> Printf.sprintf "%s\n%s\n%s" (print_AST_code g) (print_AST_code d) "DiviNb"
       | Neg    e    -> Printf.sprintf "%s\n%s" (print_AST_code e) "NegaNb"
-      | Num    n    -> Printf.sprintf "%s %i" "CsteNb" n
+      | Num    n    -> Printf.sprintf "%s %f" "CsteNb" n
     in String.concat (print_AST_code expression) [""; "\nPrint\nHalt"]
     ;;
