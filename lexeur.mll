@@ -9,6 +9,11 @@ rule token = parse
 		| ';'                      			 { PT_VIRG }
 		| ['0'-'9']+					{ NOMBRE }
 		| (['0'-'9']+'.'['0'-'9']*|['0'-'9']*'.'['0'-'9']+)			{ NOMBRE }
+		| "True" | "False"          { BOOL }
+		| "=="     { EGAL }
+		| ">="      { SUP_EGAL }
+		| '!'       { NON }
+		| '>'       { SUP }
 		| '+' 			 			{ PLUS }
 		| '-' 						{ MOINS }
 		| '*' 						{ FOIS }
