@@ -5,7 +5,7 @@ let _ = 									(*main en OCaml*)
 		let lexbuf = Lexing.from_channel channel_in in 	(*lexeur lancé sur stdin*)
 		while true do 							(*one ne s'arrête pas*)
 			Parseur.main Lexeur.token lexbuf(*parseur une ligne*)
-			|> AST.print_AST_code
+			|> AST.print_gen_code
 			|> Printf.fprintf channel_out "%s\n%!"  ;
 		done
 	with

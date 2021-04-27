@@ -22,11 +22,14 @@ and print_AST form = let open Format in function
     | Num    n    -> fprintf form "@[<2>%s@ %i@]" "Num" n
 ;;
 
-let rec print_AST_code expression =
-    match expression with
-    | Plus  (g,d) -> Printf.sprintf "%s\n%s\n%s" (print_AST_code g) (print_AST_code d) "AddiNb"
-    | Moins (g,d) -> Printf.sprintf "%s\n%s\n%s" (print_AST_code g) (print_AST_code d) "SubiNb"
-    | Mult  (g,d) -> Printf.sprintf "%s\n%s\n%s" (print_AST_code g) (print_AST_code d) "MultNb"
-    | Neg    e    -> Printf.sprintf "%s\n%s" (print_AST_code e) "NegaNb"
-    | Num    n    -> Printf.sprintf "%s %i" "CsteNb" n
-  ;;
+
+let print_gen_code expression =
+  let rec print_AST_code expression =
+      match expression with
+      | Plus  (g,d) -> Printf.sprintf "%s\n%s\n%s" (print_AST_code g) (print_AST_code d) "AddiNb"
+      | Moins (g,d) -> Printf.sprintf "%s\n%s\n%s" (print_AST_code g) (print_AST_code d) "SubiNb"
+      | Mult  (g,d) -> Printf.sprintf "%s\n%s\n%s" (print_AST_code g) (print_AST_code d) "MultNb"
+      | Neg    e    -> Printf.sprintf "%s\n%s" (print_AST_code e) "NegaNb"
+      | Num    n    -> Printf.sprintf "%s %i" "CsteNb" n
+    in String.concat (print_AST_code expression) [""; "\nPrint\nHalt"]
+    ;;
