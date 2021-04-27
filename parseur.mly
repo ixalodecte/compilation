@@ -29,6 +29,8 @@ expression:
 commande:
     VAR AFFECT expression PT_VIRG   {}
     | expression PT_VIRG            {}
+    ;
 programme:
     commande programme              {}
     | commande                      {}
+    ;
