@@ -9,6 +9,11 @@ rule token = parse
 		| ';'                      			 { PT_VIRG }
 		| ['0'-'9']+	as lexem				{ NOMBRE(float_of_string lexem) }
 		| (['0'-'9']+'.'['0'-'9']*|['0'-'9']*'.'['0'-'9']+)	as lexem		{ NOMBRE(float_of_string lexem) }
+		| "True" | "False" as lexem         { BOOL(bool_of_string (String.lowercase_ascii lexem)) }
+		| "=="     { EGAL }
+		| ">="      { SUP_EGAL }
+		| '!'       { NON }
+		| '>'       { SUP }
 		| '+' 			 			{ PLUS }
 		| '-' 						{ MOINS }
 		| '*' 						{ FOIS }
