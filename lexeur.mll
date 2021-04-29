@@ -20,5 +20,8 @@ rule token = parse
 		| '/'							{ DIV }
 		| '(' 						{ GPAREN }
 		| ')'						{ DPAREN }
+		| ['a'-'z'](['a'-'z'] | ['A'-'Z'] | '_' | '-' | ['0'-'9'])* as lexem { VAR(lexem) }
+		| '='           { AFFECT }
+		| "END"         { END }
 		| eof 					{ raise Eof }
 		| _ 						{ raise TokenInconu }

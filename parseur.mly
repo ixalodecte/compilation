@@ -4,19 +4,20 @@
 
 %token <float> NOMBRE
 %token <bool> BOOL
+%token <string> VAR
 
-%token EGAL SUP_EGAL SUP NON PLUS MOINS FOIS DIV GPAREN DPAREN PT_VIRG
+%token EGAL SUP_EGAL SUP NON PLUS MOINS FOIS DIV GPAREN DPAREN PT_VIRG VAR AFFECT END
 %left EGAL SUP SUP_EGAL
 %left PLUS MOINS
 %left FOIS DIV
 %nonassoc UMOINS
 %nonassoc NON
 
-%type <AST.expression_a> main expression
+%type <AST.programme_a> main programme
 %start main
 %%
 main:
-    expression PT_VIRG                { $1 }
+    programme END                { $1 }
     ;
 expression:
     expression EGAL expression      { Egal($1, $3)}
@@ -31,4 +32,13 @@ expression:
     | NON expression                { Non $2 }
     | NOMBRE                        {Num $1 }
     | BOOL                          {Bool $1 }
+    | VAR                           { Var $1 }
+    ;
+commande:
+    VAR AFFECT expression PT_VIRG   { Affect($1, $3)}
+    | expression PT_VIRG            { Cexpression $1 }
+    ;
+programme:
+    commande programme              { NoeudProgramme($1, $2) }
+    | commande                      { Pcommande $1 }
     ;
