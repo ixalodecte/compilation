@@ -9,7 +9,7 @@ let _ = 									(*main en OCaml*)
 			|> Printf.fprintf channel_out "%s\n%!"  ;
 		done
 	with
-	  | Lexeur.Eof -> exit 0						 (*impossible*)
-      	  | Lexeur.TokenInconu 						(*erreur de lexing*)
+	  | Lexeur.Eof -> exit 0						 (*fin du fichier*)
+    | Lexeur.TokenInconu 						(*erreur de lexing*)
 	  | Parsing.Parse_error ->						 (*erreur de parsing*)
 		Printf.printf ("Ceci n'est pas une expression arithmetique\n")

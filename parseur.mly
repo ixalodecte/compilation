@@ -18,6 +18,7 @@
 %%
 main:
     programme END                { $1 }
+    | programme                     { $1 }
     ;
 expression:
     expression EGAL expression      { Egal($1, $3)}
