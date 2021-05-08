@@ -22,6 +22,7 @@ expression:
     | GPAREN expression DPAREN      {}
     | MOINS expression %prec UMOINS {}
     | NON expression                {}
+    | VAR PLUS PLUS                 {}
     | NOMBRE                        {}
     | BOOL                          {}
     | VAR                           {}
