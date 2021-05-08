@@ -10,6 +10,7 @@
 %%
 main:
     programme END                {}
+    | programme                    {}
     ;
 expression:
     expression EGAL expression      {}
