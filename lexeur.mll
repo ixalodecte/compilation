@@ -9,9 +9,9 @@ rule token = parse
 		| "//"(_#'\n')*   { token lexbuf }
 		| "/*"((_#'*')|('*'+(_#['/' '*'])))*'*'+'/'   { token lexbuf }
 		| ';'                      			 { PT_VIRG }
-		| ['0'-'9']+	as lexem				{ NOMBRE(float_of_string lexem) }
-		| (['0'-'9']+'.'['0'-'9']*|['0'-'9']*'.'['0'-'9']+)'e''-'?['0'-'9']+	as lexem		{ NOMBRE(float_of_string lexem) }
-		| "True" | "False" as lexem         {  BOOL( bool_of_string lexem) }
+		| ['0'-'9']+('e''-'?['0'-'9']+)? as lexem					{ NOMBRE(float_of_string lexem) }
+		| (['0'-'9']+'.'['0'-'9']*|['0'-'9']*'.'['0'-'9']+)('e''-'?['0'-'9']+)?	as lexem		{ NOMBRE(float_of_string lexem) }
+		| "True" | "False" as lexem         {  BOOL(bool_of_string lexem) }
 		| "=="     { EGAL }
 		| ">="      { SUP_EGAL }
 		| '!'       { NON }
