@@ -11,6 +11,7 @@ type expression_a =
     | Non of expression_a
     | Bool of bool
     | Var of string
+    | Incr of string
     ;;
 
 type commande_a =
@@ -53,6 +54,7 @@ let rec expression_code expression =
    | Egal  (g,d) -> Printf.sprintf "%s\n%s\n%s" (expression_code g) (expression_code d) "Equals"
    | Neg    e    -> Printf.sprintf "%s\n%s" (expression_code e) "NegaNb"
    | Non    e    -> Printf.sprintf "%s\n%s" (expression_code e) "Not"
+   | Incr   v    -> Printf.sprintf "%s\n%s\n%s %s" (expression_code (Var v)) (expression_code (Plus(Var v, Num 1.))) "SetVar" v
    | Num    n    -> Printf.sprintf "%s %f" "CsteNb" n
    | Bool    b    -> Printf.sprintf "%s %B" "CsteBo" b
    | Var    s    -> Printf.sprintf "%s %s" "GetVar" s;;

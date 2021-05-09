@@ -30,6 +30,7 @@ expression:
     | expression DIV expression     { Div($1, $3) }
     | GPAREN expression DPAREN      { $2 }
     | MOINS expression %prec UMOINS { Neg $2 }
+    | VAR PLUS PLUS                 { Incr $1 }
     | NON expression                { Non $2 }
     | NOMBRE                        {Num $1 }
     | BOOL                          {Bool $1 }
