@@ -5,7 +5,9 @@
 	exception TokenInconu
 }
 rule token = parse
-		([' ' '\t' '\n']|"//"_*|"/*"_*"*/") 			{ token lexbuf }
+		[' ' '\t' '\n'] 			{ token lexbuf }
+		| "//"(_#'\n')*   { token lexbuf }
+		| "/*"((_#'*')|('*'+(_#['/' '*'])))*'*'+'/'   { token lexbuf }
 		| ';'                      			 { PT_VIRG }
 		| ['0'-'9']+	as lexem				{ NOMBRE(float_of_string lexem) }
 		| (['0'-'9']+'.'['0'-'9']*|['0'-'9']*'.'['0'-'9']+)	as lexem		{ NOMBRE(float_of_string lexem) }
