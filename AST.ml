@@ -36,7 +36,7 @@ let get_size_expression expression =
    | Egal  (_,_,i) -> i
    | Neg    (_,i)   -> i
    | Non    (_,i)    -> i
-   | Incr   _    -> 4
+   | Incr   _    -> 5
    | Num    _    -> 1
    | Bool    _    -> 1
    | Var    _    -> 1;;
@@ -68,7 +68,7 @@ let rec expression_code expression =
 let rec commande_code commande =
     match commande with
     | Affect (v,e,i) -> Printf.sprintf "%s\n%s %s" (expression_code e) "SetVar" v
-    | Ifelse (e, t, l,i ) -> Printf.sprintf "%s\nConJmp %n\n%s\nJmp %n\n%s" (expression_code e) (get_size_commande t) (commande_code t) (get_size_commande l) (commande_code l)
+    | Ifelse (e, t, l,i ) -> Printf.sprintf "%s\nConJmp %n\n%s\nJmp %n\n%s" (expression_code e) ((get_size_commande t)+1) (commande_code t) (get_size_commande l) (commande_code l)
     | Cexpression (e,i) -> expression_code e;;
 
 let rec programme_code programme =
