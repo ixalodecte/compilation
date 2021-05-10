@@ -1,4 +1,4 @@
-%token BOOL EGAL SUP_EGAL SUP NON NOMBRE PLUS MOINS FOIS DIV GPAREN DPAREN PT_VIRG VAR AFFECT END
+%token BOOL EGAL SUP_EGAL SUP NON NOMBRE PLUS MOINS FOIS DIV GPAREN DPAREN PT_VIRG VAR AFFECT END IF ELSE
 %left EGAL SUP SUP_EGAL
 %left PLUS MOINS
 %left FOIS DIV
@@ -30,6 +30,7 @@ expression:
     ;
 commande:
     VAR AFFECT expression PT_VIRG   {}
+    | IF GPAREN expression DPAREN commande ELSE commande {}
     | expression PT_VIRG            {}
     ;
 programme:
