@@ -16,6 +16,8 @@ rule token = parse
 		| ">="      { SUP_EGAL }
 		| '!'       { NON }
 		| '>'       { SUP }
+		| "&&"      { AND }
+		| "||"      { OR }
 		| '+' 			 			{ PLUS }
 		| '-' 						{ MOINS }
 		| '*' 						{ FOIS }

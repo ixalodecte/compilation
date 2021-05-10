@@ -1,4 +1,4 @@
-%token BOOL EGAL SUP_EGAL SUP NON NOMBRE PLUS MOINS FOIS DIV GPAREN DPAREN PT_VIRG VAR AFFECT END IF ELSE GACC DACC
+%token BOOL EGAL SUP_EGAL SUP NON NOMBRE PLUS MOINS FOIS DIV GPAREN DPAREN PT_VIRG VAR AFFECT END IF ELSE GACC DACC AND OR
 %left EGAL SUP SUP_EGAL
 %left PLUS MOINS
 %left FOIS DIV
@@ -13,7 +13,9 @@ main:
     | programme                   {}
     ;
 expression:
-    expression EGAL expression      {}
+    expression OR expression        {}
+    | expression AND expression     {}
+    | expression EGAL expression    {}
     | expression SUP expression     {}
     | expression SUP_EGAL expression {}
     | expression PLUS expression    {}
