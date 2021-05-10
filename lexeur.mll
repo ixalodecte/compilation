@@ -25,5 +25,7 @@ rule token = parse
 		| ['a'-'z'](['a'-'z'] | ['A'-'Z'] | '_' | ['0'-'9'])*   { VAR }
 		| '='           { AFFECT }
 		| "END"         { END }
-		| eof 					{ raise Eof }
+		| "If"          { IF }
+		| "Else"        { ELSE}
+		| eof 					{ EOF }
 		| _ 						{ raise TokenInconu }
