@@ -6,7 +6,7 @@
 %token <bool> BOOL
 %token <string> VAR
 
-%token EGAL SUP_EGAL SUP NON PLUS MOINS FOIS DIV GPAREN DPAREN PT_VIRG VAR AFFECT END IF ELSE
+%token EGAL SUP_EGAL SUP NON PLUS MOINS FOIS DIV GPAREN DPAREN PT_VIRG VAR AFFECT END IF ELSE NAN
 %left EGAL SUP SUP_EGAL
 %left PLUS MOINS
 %left FOIS DIV
@@ -38,7 +38,6 @@ expression:
     ;
 commande:
     VAR AFFECT expression PT_VIRG   { Affect($1, $3)}
-    | IF GPAREN expression DPAREN commande ELSE commande {}
     | expression PT_VIRG            { Cexpression $1 }
     ;
 programme:
