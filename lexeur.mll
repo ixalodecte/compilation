@@ -29,5 +29,5 @@ rule token = parse
 		| '{'           { GACC }
 		| '}'           { DACC }
 		| "Else"        { ELSE}
-		| eof 					{ EOF }
+		| eof 					{ raise Eof }
 		| _ 						{ raise TokenInconu }
