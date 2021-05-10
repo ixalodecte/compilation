@@ -1,4 +1,4 @@
-%token BOOL EGAL SUP_EGAL SUP NON NOMBRE PLUS MOINS FOIS DIV GPAREN DPAREN PT_VIRG VAR AFFECT END IF ELSE
+%token BOOL EGAL SUP_EGAL SUP NON NOMBRE PLUS MOINS FOIS DIV GPAREN DPAREN PT_VIRG VAR AFFECT END IF ELSE EOF
 %left EGAL SUP SUP_EGAL
 %left PLUS MOINS
 %left FOIS DIV
@@ -10,7 +10,7 @@
 %%
 main:
     programme END                {}
-    | programme                    {}
+    | programme EOF                   {}
     ;
 expression:
     expression EGAL expression      {}
