@@ -6,7 +6,7 @@
 %token <bool> BOOL
 %token <string> VAR
 
-%token EGAL SUP_EGAL SUP NON PLUS MOINS FOIS DIV GPAREN DPAREN PT_VIRG VAR AFFECT END IF ELSE
+%token EGAL SUP_EGAL SUP NON PLUS MOINS FOIS DIV GPAREN DPAREN PT_VIRG VAR AFFECT END IF ELSE EOF
 %left EGAL SUP SUP_EGAL
 %left PLUS MOINS
 %left FOIS DIV
@@ -18,7 +18,7 @@
 %%
 main:
     programme END                { $1 }
-    | programme                     { $1 }
+    | programme EOF                    { $1 }
     ;
 expression:
     expression EGAL expression      { Egal($1, $3, (get_size_expression $1) + (get_size_expression $3) + 1)}
