@@ -27,5 +27,5 @@ rule token = parse
 		| "END"         { END }
 		| "If"          { IF }
 		| "Else"        { ELSE}
-		| eof 					{ raise Eof }
+		| eof 					{ EOF }
 		| _ 						{ raise TokenInconu }
