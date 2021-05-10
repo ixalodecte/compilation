@@ -1,4 +1,4 @@
-%token BOOL EGAL SUP_EGAL SUP NON NOMBRE PLUS MOINS FOIS DIV GPAREN DPAREN PT_VIRG VAR AFFECT END
+%token BOOL EGAL SUP_EGAL SUP NON NOMBRE PLUS MOINS FOIS DIV GPAREN DPAREN PT_VIRG VAR AFFECT END NAN
 %left EGAL SUP SUP_EGAL
 %left PLUS MOINS
 %left FOIS DIV
@@ -27,6 +27,7 @@ expression:
     | NOMBRE                        {}
     | BOOL                          {}
     | VAR                           {}
+    | NAN                           {}
     ;
 commande:
     VAR AFFECT expression PT_VIRG   {}
