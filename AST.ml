@@ -1,22 +1,23 @@
 type expression_a =
-    | Plus  of expression_a * expression_a
-    | Moins of expression_a * expression_a
-    | Mult  of expression_a * expression_a
-    | Div   of expression_a * expression_a
-    | Egal   of expression_a * expression_a
-    | Sup_egal   of expression_a * expression_a
-    | Sup   of expression_a * expression_a
-    | Neg   of expression_a
+    | Plus  of expression_a * expression_a * int
+    | Moins of expression_a * expression_a * int
+    | Mult  of expression_a * expression_a * int
+    | Div   of expression_a * expression_a * int
+    | Egal   of expression_a * expression_a * int
+    | Sup_egal   of expression_a * expression_a * int
+    | Sup   of expression_a * expression_a * int
+    | Neg   of expression_a * int
     | Num   of float
-    | Non of expression_a
+    | Non of expression_a * int
     | Bool of bool
     | Var of string
     | Incr of string
     ;;
 
 type commande_a =
-    | Affect of string * expression_a
-    | Cexpression of expression_a
+    | Affect of string * expression_a * int
+    | Ifelse of expression_a * commande_a * commande_a * int
+    | Cexpression of expression_a * int
 ;;
 
 type programme_a =
@@ -24,45 +25,51 @@ type programme_a =
     | Pcommande of commande_a
 ;;
 
+let get_size_expression expression =
+   match expression with
+   | Plus  (_,_,i) -> i
+   | Moins (_,_,i) -> i
+   | Mult  (_,_,i) -> i
+   | Div  (_,_,i) -> i
+   | Sup  (_,_,i) -> i
+   | Sup_egal  (_,_,i) -> i
+   | Egal  (_,_,i) -> i
+   | Neg    (_,i)   -> i
+   | Non    (_,i)    -> i
+   | Incr   _    -> 4
+   | Num    _    -> 1
+   | Bool    _    -> 1
+   | Var    _    -> 1;;
+
+let get_size_commande commande =
+    match commande with
+    | Affect (_,_,i) -> i
+    | Ifelse (_,_,_,i) -> i
+    | Cexpression (_,i) -> i;;
+
 (* Fonctions d'affichage *)
-
-let rec print_binaire form s g d = Format.fprintf form "@[<2>%s%s@ %a%s@ %a%s@]" s "(" print_AST g " ," print_AST d " )"
-
-and print_AST form = let open Format in function
-    | Plus  (g,d) -> print_binaire form "Plus" g d
-    | Moins (g,d) -> print_binaire form "Moins" g d
-    | Mult  (g,d) -> print_binaire form "Mult" g d
-    | Div   (g,d) -> print_binaire form "Div" g d
-    | Sup   (g,d) -> print_binaire form "Sup" g d
-    | Egal   (g,d) -> print_binaire form "Egal" g d
-    | Sup_egal   (g,d) -> print_binaire form "Sup_egal" g d
-    | Non    e    -> fprintf form "@[<2>%s@ %a@]" "Non" print_AST e
-    | Neg    e    -> fprintf form "@[<2>%s@ %a@]" "Neg" print_AST e
-    | Num    n    -> fprintf form "@[<2>%s@ %f@]" "Num" n
-    | Bool   b    -> fprintf form "@[<2>%s@ %B@]" "Bool" b
-
-;;
 
 let rec expression_code expression =
    match expression with
-   | Plus  (g,d) -> Printf.sprintf "%s\n%s\n%s" (expression_code g) (expression_code d) "AddiNb"
-   | Moins (g,d) -> Printf.sprintf "%s\n%s\n%s" (expression_code g) (expression_code d) "SubiNb"
-   | Mult  (g,d) -> Printf.sprintf "%s\n%s\n%s" (expression_code g) (expression_code d) "MultNb"
-   | Div  (g,d) -> Printf.sprintf "%s\n%s\n%s" (expression_code g) (expression_code d) "DiviNb"
-   | Sup  (g,d) -> Printf.sprintf "%s\n%s\n%s" (expression_code g) (expression_code d) "GrStNb"
-   | Sup_egal  (g,d) -> Printf.sprintf "%s\n%s\n%s" (expression_code g) (expression_code d) "GrEqNb"
-   | Egal  (g,d) -> Printf.sprintf "%s\n%s\n%s" (expression_code g) (expression_code d) "Equals"
-   | Neg    e    -> Printf.sprintf "%s\n%s" (expression_code e) "NegaNb"
-   | Non    e    -> Printf.sprintf "%s\n%s" (expression_code e) "Not"
-   | Incr   v    -> Printf.sprintf "%s\n%s\n%s %s" (expression_code (Var v)) (expression_code (Plus(Var v, Num 1.))) "SetVar" v
+   | Plus  (g,d,i) -> Printf.sprintf "%s\n%s\n%s" (expression_code g) (expression_code d) "AddiNb"
+   | Moins (g,d,i) -> Printf.sprintf "%s\n%s\n%s" (expression_code g) (expression_code d) "SubiNb"
+   | Mult  (g,d,i) -> Printf.sprintf "%s\n%s\n%s" (expression_code g) (expression_code d) "MultNb"
+   | Div  (g,d,i) -> Printf.sprintf "%s\n%s\n%s" (expression_code g) (expression_code d) "DiviNb"
+   | Sup  (g,d,i) -> Printf.sprintf "%s\n%s\n%s" (expression_code g) (expression_code d) "GrStNb"
+   | Sup_egal  (g,d,i) -> Printf.sprintf "%s\n%s\n%s" (expression_code g) (expression_code d) "GrEqNb"
+   | Egal  (g,d,i) -> Printf.sprintf "%s\n%s\n%s" (expression_code g) (expression_code d) "Equals"
+   | Neg    (e,i)    -> Printf.sprintf "%s\n%s" (expression_code e) "NegaNb"
+   | Non    (e,i)    -> Printf.sprintf "%s\n%s" (expression_code e) "Not"
+   | Incr   v    -> Printf.sprintf "%s\n%s\n%s %s" (expression_code (Var v)) (expression_code (Plus(Var v, Num 1.,1))) "SetVar" v
    | Num    n    -> Printf.sprintf "%s %f" "CsteNb" n
    | Bool    b    -> Printf.sprintf "%s %B" "CsteBo" b
    | Var    s    -> Printf.sprintf "%s %s" "GetVar" s;;
 
-let commande_code commande =
-   match commande with
-   | Affect (v,e) -> Printf.sprintf "%s\n%s %s" (expression_code e) "SetVar" v
-   | Cexpression e -> expression_code e;;
+let rec commande_code commande =
+    match commande with
+    | Affect (v,e,i) -> Printf.sprintf "%s\n%s %s" (expression_code e) "SetVar" v
+    | Ifelse (e, t, l,i ) -> Printf.sprintf "%s\nConJmp %n\n%s\nJmp %n\n%s" (expression_code e) (get_size_commande t) (commande_code t) (get_size_commande l) (commande_code l)
+    | Cexpression (e,i) -> expression_code e;;
 
 let rec programme_code programme =
    match programme with
