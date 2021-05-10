@@ -26,6 +26,8 @@ rule token = parse
 		| '='           { AFFECT }
 		| "END"         { END }
 		| "If"          { IF }
+		| '{'           { GACC }
+		| '}'           { DACC }
 		| "Else"        { ELSE}
 		| eof 					{ EOF }
 		| _ 						{ raise TokenInconu }
