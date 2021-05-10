@@ -18,9 +18,10 @@ type commande_a =
     | Affect of string * expression_a * int
     | Ifelse of expression_a * commande_a * commande_a * int
     | Cexpression of expression_a * int
-;;
-
-type programme_a =
+    | Group of programme_a
+    | Ptvirg
+and
+programme_a =
     | NoeudProgramme of commande_a * programme_a
     | Pcommande of commande_a
 ;;
@@ -41,11 +42,18 @@ let get_size_expression expression =
    | Bool    _    -> 1
    | Var    _    -> 1;;
 
-let get_size_commande commande =
+let rec get_size_programme programme =
+   match programme with
+   | NoeudProgramme (a,b) -> (get_size_commande a) + (get_size_programme b)
+   | Pcommande a -> (get_size_commande a)
+and
+get_size_commande commande =
     match commande with
     | Affect (_,_,i) -> i
     | Ifelse (_,_,_,i) -> i
-    | Cexpression (_,i) -> i;;
+    | Cexpression (_,i) -> i
+    | Group p -> get_size_programme p
+    | Ptvirg -> 0;;
 
 (* Fonctions d'affichage *)
 
@@ -69,9 +77,11 @@ let rec commande_code commande =
     match commande with
     | Affect (v,e,i) -> Printf.sprintf "%s\n%s %s" (expression_code e) "SetVar" v
     | Ifelse (e, t, l,i ) -> Printf.sprintf "%s\nConJmp %n\n%s\nJump %n\n%s" (expression_code e) ((get_size_commande t)+1) (commande_code t) (get_size_commande l) (commande_code l)
-    | Cexpression (e,i) -> expression_code e;;
-
-let rec programme_code programme =
+    | Cexpression (e,i) -> expression_code e
+    | Group p -> programme_code p
+    | Ptvirg -> "Noop"
+and
+programme_code programme =
    match programme with
    | NoeudProgramme (c, p) -> Printf.sprintf "%s \n%s" (commande_code c) (programme_code p)
    | Pcommande c -> commande_code c;;

@@ -6,7 +6,7 @@
 %token <bool> BOOL
 %token <string> VAR
 
-%token EGAL SUP_EGAL SUP NON PLUS MOINS FOIS DIV GPAREN DPAREN PT_VIRG VAR AFFECT END IF ELSE EOF
+%token EGAL SUP_EGAL SUP NON PLUS MOINS FOIS DIV GPAREN DPAREN PT_VIRG VAR AFFECT END IF ELSE EOF GACC DACC
 %left EGAL SUP SUP_EGAL
 %left PLUS MOINS
 %left FOIS DIV
@@ -40,6 +40,8 @@ commande:
     VAR AFFECT expression PT_VIRG   { Affect($1, $3, (get_size_expression $3) + 1)}
     | IF GPAREN expression DPAREN commande ELSE commande { Ifelse($3, $5, $7, (get_size_expression $3)+(get_size_commande $5) + (get_size_commande $7)+2) }
     | expression PT_VIRG            { Cexpression ($1, (get_size_expression $1)) }
+    | PT_VIRG                       { Ptvirg }
+    | GACC programme DACC           { Group($2) }
     ;
 programme:
     commande programme              { NoeudProgramme($1, $2) }
