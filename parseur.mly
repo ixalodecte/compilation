@@ -27,7 +27,6 @@ expression:
     | NOMBRE                        {}
     | BOOL                          {}
     | VAR                           {}
-    | NAN                           {}
     ;
 commande:
     VAR AFFECT expression PT_VIRG   {}

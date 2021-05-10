@@ -24,7 +24,6 @@ rule token = parse
 		| ')'						{ DPAREN }
 		| ['a'-'z'](['a'-'z'] | ['A'-'Z'] | '_' | ['0'-'9'])*   { VAR }
 		| '='           { AFFECT }
-		| "NaN"         { NAN }
 		| "END"         { END }
 		| eof 					{ raise Eof }
 		| _ 						{ raise TokenInconu }
