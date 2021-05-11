@@ -44,7 +44,7 @@ expression:
     ;
 commande:
     IF GPAREN expression DPAREN commande ELSE commande { Ifelse($3, $5, $7, (get_size_expression $3)+(get_size_commande $5) + (get_size_commande $7)+2) }
-    | DO commande WHILE GPAREN expression DPAREN       { Dowhile($2, $5, (get_size_commande $2) + (get_size_expression $5) + 1) }
+    | DO commande WHILE GPAREN expression DPAREN       { Dowhile($2, $5, (get_size_commande $2) + (get_size_expression $5) + 2) }
     | expression PT_VIRG            { Cexpression ($1, (get_size_expression $1)) }
     | PT_VIRG                       { Ptvirg }
     | GACC programme DACC           { Group($2, (get_size_programme $2)) }
