@@ -63,7 +63,7 @@ get_size_commande commande =
     | For (_,_,_,_,i)   -> i
     | Cexpression (_,i) -> i
     | Group (_,i)       -> i
-    | Ptvirg            -> 0;;
+    | Ptvirg            -> 1;;
 
 (* Fonctions d'affichage *)
 
