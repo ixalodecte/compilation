@@ -6,7 +6,7 @@
 %token <bool> BOOL
 %token <string> VAR
 
-%token EGAL SUP_EGAL SUP NON PLUS MOINS FOIS DIV GPAREN DPAREN PT_VIRG VAR AFFECT END IF ELSE EOF GACC DACC
+%token EGAL SUP_EGAL SUP NON PLUS MOINS FOIS DIV GPAREN DPAREN PT_VIRG VAR AFFECT END IF ELSE EOF GACC DACC AND OR
 %left EGAL SUP SUP_EGAL
 %left PLUS MOINS
 %left FOIS DIV
@@ -21,7 +21,9 @@ main:
     | programme EOF                   { $1 }
     ;
 expression:
-    expression EGAL expression      { Egal($1, $3, (get_size_expression $1) + (get_size_expression $3) + 1)}
+    expression OR expression        { Or($1, $3, (get_size_expression $1) + (get_size_expression $3) + 3)}
+    | expression AND expression        { And($1, $3, (get_size_expression $1) + (get_size_expression $3) + 3)}
+    | expression EGAL expression      { Egal($1, $3, (get_size_expression $1) + (get_size_expression $3) + 1)}
     | expression SUP expression     { Sup($1, $3, (get_size_expression $1) + (get_size_expression $3) + 1) }
     | expression SUP_EGAL expression { Sup_egal($1, $3, (get_size_expression $1) + (get_size_expression $3) + 1) }
     | expression PLUS expression    { Plus($1, $3, (get_size_expression $1) + (get_size_expression $3) + 1)}
@@ -41,9 +43,9 @@ commande:
     | IF GPAREN expression DPAREN commande ELSE commande { Ifelse($3, $5, $7, (get_size_expression $3)+(get_size_commande $5) + (get_size_commande $7)+2) }
     | expression PT_VIRG            { Cexpression ($1, (get_size_expression $1)) }
     | PT_VIRG                       { Ptvirg }
-    | GACC programme DACC           { Group($2) }
+    | GACC programme DACC           { Group($2, (get_size_programme $2)) }
     ;
 programme:
-    commande programme              { NoeudProgramme($1, $2) }
-    | commande                      { Pcommande $1 }
+    commande programme              { NoeudProgramme($1, $2, (get_size_commande $1) + (get_size_programme $2)) }
+    | commande                      { Pcommande ($1, get_size_commande $1) }
     ;

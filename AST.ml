@@ -3,6 +3,8 @@ type expression_a =
     | Moins of expression_a * expression_a * int
     | Mult  of expression_a * expression_a * int
     | Div   of expression_a * expression_a * int
+    | And   of expression_a * expression_a * int
+    | Or    of expression_a * expression_a * int
     | Egal   of expression_a * expression_a * int
     | Sup_egal   of expression_a * expression_a * int
     | Sup   of expression_a * expression_a * int
@@ -18,17 +20,19 @@ type commande_a =
     | Affect of string * expression_a * int
     | Ifelse of expression_a * commande_a * commande_a * int
     | Cexpression of expression_a * int
-    | Group of programme_a
+    | Group of programme_a * int
     | Ptvirg
 and
 programme_a =
-    | NoeudProgramme of commande_a * programme_a
-    | Pcommande of commande_a
+    | NoeudProgramme of commande_a * programme_a * int
+    | Pcommande of commande_a * int
 ;;
 
 let get_size_expression expression =
    match expression with
    | Plus  (_,_,i) -> i
+   | Or  (_,_,i) -> i
+   | And  (_,_,i) -> i
    | Moins (_,_,i) -> i
    | Mult  (_,_,i) -> i
    | Div  (_,_,i) -> i
@@ -44,30 +48,32 @@ let get_size_expression expression =
 
 let rec get_size_programme programme =
    match programme with
-   | NoeudProgramme (a,b) -> (get_size_commande a) + (get_size_programme b)
-   | Pcommande a -> (get_size_commande a)
+   | NoeudProgramme (a,b,i) -> i
+   | Pcommande (a,i) -> i
 and
 get_size_commande commande =
     match commande with
     | Affect (_,_,i) -> i
     | Ifelse (_,_,_,i) -> i
     | Cexpression (_,i) -> i
-    | Group p -> get_size_programme p
+    | Group (_,i) -> i
     | Ptvirg -> 0;;
 
 (* Fonctions d'affichage *)
 
 let rec expression_code expression =
    match expression with
-   | Plus  (g,d,i) -> Printf.sprintf "%s\n%s\n%s" (expression_code g) (expression_code d) "AddiNb"
-   | Moins (g,d,i) -> Printf.sprintf "%s\n%s\n%s" (expression_code g) (expression_code d) "SubiNb"
-   | Mult  (g,d,i) -> Printf.sprintf "%s\n%s\n%s" (expression_code g) (expression_code d) "MultNb"
-   | Div  (g,d,i) -> Printf.sprintf "%s\n%s\n%s" (expression_code g) (expression_code d) "DiviNb"
-   | Sup  (g,d,i) -> Printf.sprintf "%s\n%s\n%s" (expression_code g) (expression_code d) "GrStNb"
-   | Sup_egal  (g,d,i) -> Printf.sprintf "%s\n%s\n%s" (expression_code g) (expression_code d) "GrEqNb"
-   | Egal  (g,d,i) -> Printf.sprintf "%s\n%s\n%s" (expression_code g) (expression_code d) "Equals"
-   | Neg    (e,i)    -> Printf.sprintf "%s\n%s" (expression_code e) "NegaNb"
-   | Non    (e,i)    -> Printf.sprintf "%s\n%s" (expression_code e) "Not"
+   | Plus  (g,d,_) -> Printf.sprintf "%s\n%s\n%s" (expression_code g) (expression_code d) "AddiNb"
+   | Moins (g,d,_) -> Printf.sprintf "%s\n%s\n%s" (expression_code g) (expression_code d) "SubiNb"
+   | Mult  (g,d,_) -> Printf.sprintf "%s\n%s\n%s" (expression_code g) (expression_code d) "MultNb"
+   | Div  (g,d,_) -> Printf.sprintf "%s\n%s\n%s" (expression_code g) (expression_code d) "DiviNb"
+   | Sup  (g,d,_) -> Printf.sprintf "%s\n%s\n%s" (expression_code g) (expression_code d) "GrStNb"
+   | And  (g,d,_) -> Printf.sprintf "%s\n%s %n\n%s\n%s\n%s" (expression_code g) "ConJmp" ((get_size_expression d)+1) (expression_code d) "Jump 1" "CstBo False"
+   | Or  (g,d,_) -> Printf.sprintf "%s\n%s\n%s\n%s %n\n%s" (expression_code g) "ConJmp 2" "CstBo True" "Jump 1" (get_size_expression d) (expression_code d)
+   | Sup_egal  (g,d,_) -> Printf.sprintf "%s\n%s\n%s" (expression_code g) (expression_code d) "GrEqNb"
+   | Egal  (g,d,_) -> Printf.sprintf "%s\n%s\n%s" (expression_code g) (expression_code d) "Equals"
+   | Neg    (e,_)    -> Printf.sprintf "%s\n%s" (expression_code e) "NegaNb"
+   | Non    (e,_)    -> Printf.sprintf "%s\n%s" (expression_code e) "Not"
    | Incr   v    -> Printf.sprintf "%s\n%s\n%s %s" (expression_code (Var v)) (expression_code (Plus(Var v, Num 1.,1))) "SetVar" v
    | Num    n    -> Printf.sprintf "%s %f" "CsteNb" n
    | Bool    b    -> Printf.sprintf "%s %B" "CsteBo" b
@@ -75,16 +81,16 @@ let rec expression_code expression =
 
 let rec commande_code commande =
     match commande with
-    | Affect (v,e,i) -> Printf.sprintf "%s\n%s %s" (expression_code e) "SetVar" v
-    | Ifelse (e, t, l,i ) -> Printf.sprintf "%s\nConJmp %n\n%s\nJump %n\n%s" (expression_code e) ((get_size_commande t)+1) (commande_code t) (get_size_commande l) (commande_code l)
-    | Cexpression (e,i) -> expression_code e
-    | Group p -> programme_code p
+    | Affect (v,e,_) -> Printf.sprintf "%s\n%s %s" (expression_code e) "SetVar" v
+    | Ifelse (e, t, l,_ ) -> Printf.sprintf "%s\nConJmp %n\n%s\nJump %n\n%s" (expression_code e) ((get_size_commande t)+1) (commande_code t) (get_size_commande l) (commande_code l)
+    | Cexpression (e,_) -> expression_code e
+    | Group (p,_) -> programme_code p
     | Ptvirg -> "Noop"
 and
 programme_code programme =
    match programme with
-   | NoeudProgramme (c, p) -> Printf.sprintf "%s \n%s" (commande_code c) (programme_code p)
-   | Pcommande c -> commande_code c;;
+   | NoeudProgramme (c, p,_) -> Printf.sprintf "%s \n%s" (commande_code c) (programme_code p)
+   | Pcommande (c,_) -> commande_code c;;
 
 let print_gen_code programme =
 
