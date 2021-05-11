@@ -11,7 +11,7 @@ rule token = parse
 		| ';'                      			 { PT_VIRG }
 		| ['0'-'9']+('e''-'?['0'-'9']+)?					{ NOMBRE }
 		| (['0'-'9']+'.'['0'-'9']*|['0'-'9']*'.'['0'-'9']+)('e''-'?['0'-'9']+)?			{ NOMBRE }
-		| "True" | "False"          { BOOL }
+		| "true" | "false"          { BOOL }
 		| "=="     { EGAL }
 		| "++"     { INCREM }
 		| ">="      { SUP_EGAL }
@@ -25,15 +25,15 @@ rule token = parse
 		| '/'							{ DIV }
 		| '(' 						{ GPAREN }
 		| ')'						{ DPAREN }
-		| ['a'-'z'](['a'-'z'] | ['A'-'Z'] | '_' | ['0'-'9'])*   { VAR }
-		| '='           { AFFECT }
 		| "END"         { END }
-		| "If"          { IF }
+		| "if"          { IF }
+		| "else"        { ELSE}
+		| "do"          { DO }
+		| "while"       { WHILE }
+		| "for"         { FOR }
+		| (['a'-'z']| ['A'-'Z'])(['a'-'z'] | ['A'-'Z'] | '_' | ['0'-'9'])*  { VAR }
+		| '='           { AFFECT }
 		| '{'           { GACC }
 		| '}'           { DACC }
-		| "Else"        { ELSE}
-		| "Do"          { DO }
-		| "While"       { WHILE }
-		| "For"         { FOR }
 		| eof 					{ raise Eof }
 		| _ 						{ raise TokenInconu }
