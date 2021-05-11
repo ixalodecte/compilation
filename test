@@ -1,8 +1,13 @@
+index = 5;
+i=2;
 a=0;
 b=1;
-s = 0
+s = 0;
 Do {
+   // somme
    s = a+b;
-   c=5;
-} While (!(a>5))
+   a=b;
+   b=s;
+   i++;
+} While (!(i==index))
 c=3;

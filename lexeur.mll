@@ -13,6 +13,7 @@ rule token = parse
 		| (['0'-'9']+'.'['0'-'9']*|['0'-'9']*'.'['0'-'9']+)('e''-'?['0'-'9']+)?	as lexem		{ NOMBRE(float_of_string lexem) }
 		| "True" | "False" as lexem         {  BOOL(bool_of_string (String.lowercase_ascii lexem)) }
 		| "=="     { EGAL }
+		| "++"     { INCREM }
 		| ">="      { SUP_EGAL }
 		| '!'       { NON }
 		| '>'       { SUP }

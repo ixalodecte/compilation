@@ -6,7 +6,7 @@
 %token <bool> BOOL
 %token <string> VAR
 
-%token EGAL SUP_EGAL SUP NON PLUS MOINS FOIS DIV GPAREN DPAREN PT_VIRG VAR AFFECT END IF ELSE EOF GACC DACC AND OR DO WHILE
+%token EGAL SUP_EGAL SUP NON PLUS MOINS FOIS DIV GPAREN DPAREN PT_VIRG VAR AFFECT END IF ELSE EOF GACC DACC AND OR DO WHILE INCREM
 %right AFFECT
 %left OR
 %left AND
@@ -36,7 +36,7 @@ expression:
     | expression DIV expression     { Div($1, $3, (get_size_expression $1) + (get_size_expression $3) + 1) }
     | GPAREN expression DPAREN      { $2 }
     | MOINS expression %prec UMOINS { Neg ($2, (get_size_expression $2) + 1) }
-    | VAR PLUS PLUS                 { Incr $1 }
+    | VAR INCREM                    { Incr $1 }
     | NON expression                { Non ($2, (get_size_expression $2) + 1) }
     | NOMBRE                        { Num $1 }
     | BOOL                          { Bool $1 }
