@@ -16,7 +16,7 @@ main:
     | programme                   {}
     ;
 expression:
-    VAR AFFECT expression PT_VIRG   {}
+    VAR AFFECT expression   {}
     | expression OR expression        {}
     | expression AND expression     {}
     | expression EGAL expression    {}
