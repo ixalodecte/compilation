@@ -31,5 +31,7 @@ rule token = parse
 		| '{'           { GACC }
 		| '}'           { DACC }
 		| "Else"        { ELSE}
+		| "Do"          { DO }
+		| "While"       { WHILE }
 		| eof 					{ EOF }
 		| _ 						{ raise TokenInconu }
