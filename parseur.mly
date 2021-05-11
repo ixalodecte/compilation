@@ -1,4 +1,4 @@
-%token BOOL EGAL SUP_EGAL SUP NON NOMBRE PLUS MOINS FOIS DIV GPAREN DPAREN PT_VIRG VAR AFFECT END IF ELSE GACC DACC AND OR
+%token BOOL EGAL SUP_EGAL SUP NON NOMBRE PLUS MOINS FOIS DIV GPAREN DPAREN PT_VIRG VAR AFFECT END IF ELSE GACC DACC AND OR DO WHILE
 %right AFFECT
 %left OR
 %left AND
@@ -36,6 +36,7 @@ expression:
     ;
 commande:
     IF GPAREN expression DPAREN commande ELSE commande {}
+    | DO commande WHILE GPAREN expression DPAREN       {}
     | expression PT_VIRG            {}
     | PT_VIRG                       {}
     | GACC programme DACC           {}
