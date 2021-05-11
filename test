@@ -1,9 +1,10 @@
-test = 0;
+Test1 = 0;
+ife = 0;
 n1 = 0;
 n2 = 1;
 somme = 0;
-If (test == 0)
- For(i = 2; 10 >= i ; i++){
+if (test == 0)
+ for(i = 2; 10 >= i ; i++){
     //somme des deux derniers nombres
     somme = n1 + n2;
     //assigner la dernière valeur à la première
@@ -11,5 +12,5 @@ If (test == 0)
     //attribuer la somme au dernier
     n2 = somme;
  }
-Else
+else
   bbb=0;

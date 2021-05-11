@@ -11,7 +11,7 @@ rule token = parse
 		| ';'                      			 { PT_VIRG }
 		| ['0'-'9']+('e''-'?['0'-'9']+)? as lexem					{ NOMBRE(float_of_string lexem) }
 		| (['0'-'9']+'.'['0'-'9']*|['0'-'9']*'.'['0'-'9']+)('e''-'?['0'-'9']+)?	as lexem		{ NOMBRE(float_of_string lexem) }
-		| "True" | "False" as lexem         {  BOOL(bool_of_string (String.lowercase_ascii lexem)) }
+		| "true" | "false" as lexem         {  BOOL(bool_of_string (String.lowercase_ascii lexem)) }
 		| "=="     { EGAL }
 		| "++"     { INCREM }
 		| ">="      { SUP_EGAL }
@@ -25,15 +25,16 @@ rule token = parse
 		| '/'							{ DIV }
 		| '(' 						{ GPAREN }
 		| ')'						{ DPAREN }
-		| ['a'-'z'](['a'-'z'] | ['A'-'Z'] | '_' | ['0'-'9'])* as lexem  { VAR(lexem) }
 		| '='           { AFFECT }
 		| "END"         { END }
-		| "If"          { IF }
+		| "if"          { IF }
+		| "else"        { ELSE}
+		| "do"          { DO }
+		| "while"       { WHILE }
+		| "for"         { FOR }
+		| (['a'-'z']| ['A'-'Z'])(['a'-'z'] | ['A'-'Z'] | '_' | ['0'-'9'])*  as lexem  { VAR(lexem) }
+		| '='           { AFFECT }
 		| '{'           { GACC }
 		| '}'           { DACC }
-		| "Else"        { ELSE}
-		| "Do"          { DO }
-		| "While"       { WHILE }
-		| "For"         { FOR }
 		| eof 					{ EOF }
 		| _ 						{ raise TokenInconu }
