@@ -34,5 +34,6 @@ rule token = parse
 		| "Else"        { ELSE}
 		| "Do"          { DO }
 		| "While"       { WHILE }
+		| "For"         { FOR }
 		| eof 					{ raise Eof }
 		| _ 						{ raise TokenInconu }
