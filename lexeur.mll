@@ -13,6 +13,7 @@ rule token = parse
 		| (['0'-'9']+'.'['0'-'9']*|['0'-'9']*'.'['0'-'9']+)('e''-'?['0'-'9']+)?			{ NOMBRE }
 		| "True" | "False"          { BOOL }
 		| "=="     { EGAL }
+		| "++"     { INCREM }
 		| ">="      { SUP_EGAL }
 		| '!'       { NON }
 		| '>'       { SUP }

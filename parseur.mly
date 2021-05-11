@@ -1,4 +1,4 @@
-%token BOOL EGAL SUP_EGAL SUP NON NOMBRE PLUS MOINS FOIS DIV GPAREN DPAREN PT_VIRG VAR AFFECT END IF ELSE GACC DACC AND OR DO WHILE
+%token BOOL EGAL SUP_EGAL SUP NON NOMBRE PLUS MOINS FOIS DIV GPAREN DPAREN PT_VIRG VAR AFFECT END IF ELSE GACC DACC AND OR DO WHILE INCREM
 %right AFFECT
 %left OR
 %left AND
@@ -29,7 +29,7 @@ expression:
     | GPAREN expression DPAREN      {}
     | MOINS expression %prec UMOINS {}
     | NON expression                {}
-    | VAR PLUS PLUS                 {}
+    | VAR INCREM                    {}
     | NOMBRE                        {}
     | BOOL                          {}
     | VAR                           {}
