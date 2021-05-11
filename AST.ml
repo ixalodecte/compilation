@@ -1,4 +1,5 @@
 type expression_a =
+    | Affect of string * expression_a * int
     | Plus  of expression_a * expression_a * int
     | Moins of expression_a * expression_a * int
     | Mult  of expression_a * expression_a * int
@@ -17,7 +18,6 @@ type expression_a =
     ;;
 
 type commande_a =
-    | Affect of string * expression_a * int
     | Ifelse of expression_a * commande_a * commande_a * int
     | Cexpression of expression_a * int
     | Group of programme_a * int
@@ -30,6 +30,7 @@ programme_a =
 
 let get_size_expression expression =
    match expression with
+   | Affect (_,_,i) -> i
    | Plus  (_,_,i) -> i
    | Or  (_,_,i) -> i
    | And  (_,_,i) -> i
@@ -53,7 +54,6 @@ let rec get_size_programme programme =
 and
 get_size_commande commande =
     match commande with
-    | Affect (_,_,i) -> i
     | Ifelse (_,_,_,i) -> i
     | Cexpression (_,i) -> i
     | Group (_,i) -> i
@@ -63,6 +63,7 @@ get_size_commande commande =
 
 let rec expression_code expression =
    match expression with
+   | Affect (v,e,_) -> Printf.sprintf "%s\n%s %s\n%s %s" (expression_code e) "SetVar" v "GetVar" v
    | Plus  (g,d,_) -> Printf.sprintf "%s\n%s\n%s" (expression_code g) (expression_code d) "AddiNb"
    | Moins (g,d,_) -> Printf.sprintf "%s\n%s\n%s" (expression_code g) (expression_code d) "SubiNb"
    | Mult  (g,d,_) -> Printf.sprintf "%s\n%s\n%s" (expression_code g) (expression_code d) "MultNb"
@@ -81,7 +82,6 @@ let rec expression_code expression =
 
 let rec commande_code commande =
     match commande with
-    | Affect (v,e,_) -> Printf.sprintf "%s\n%s %s" (expression_code e) "SetVar" v
     | Ifelse (e, t, l,_ ) -> Printf.sprintf "%s\nConJmp %n\n%s\nJump %n\n%s" (expression_code e) ((get_size_commande t)+1) (commande_code t) (get_size_commande l) (commande_code l)
     | Cexpression (e,_) -> expression_code e
     | Group (p,_) -> programme_code p
