@@ -33,6 +33,9 @@ rule token = parse
 		| "for"         { FOR }
 		| "undefined"   { UNDEF }
 		| "NaN"         { NAN }
+		| "function"    { FUNC }
+		| "return"      { RETURN }
+		| ','           { VIRG }
 		| (['a'-'z']| ['A'-'Z'])(['a'-'z'] | ['A'-'Z'] | '_' | ['0'-'9'])*  { VAR }
 		| '='           { AFFECT }
 		| '{'           { GACC }

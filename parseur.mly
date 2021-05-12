@@ -1,4 +1,5 @@
-%token BOOL EGAL SUP_EGAL SUP NON NOMBRE PLUS MOINS FOIS DIV GPAREN DPAREN PT_VIRG VAR AFFECT END IF ELSE GACC DACC AND OR DO WHILE INCREM FOR UNDEF NAN
+%token BOOL EGAL SUP_EGAL SUP NON NOMBRE PLUS MOINS FOIS DIV GPAREN DPAREN PT_VIRG
+VAR AFFECT END IF ELSE GACC DACC AND OR DO WHILE INCREM FOR UNDEF NAN FUNC RETURN VIRG
 %right AFFECT
 %left OR
 %left AND
@@ -26,6 +27,7 @@ expression:
     | expression MOINS expression   {}
     | expression FOIS expression    {}
     | expression DIV expression     {}
+    | VAR GPAREN arguments DPAREN   {}
     | GPAREN expression DPAREN      {}
     | MOINS expression %prec UMOINS {}
     | NON expression                {}
@@ -44,8 +46,19 @@ commande:
     | expression PT_VIRG            {}
     | PT_VIRG                       {}
     | GACC programme DACC           {}
+    | FUNC VAR GPAREN decl_args DPAREN GACC programme DACC   {}
+    | RETURN expression                                          {}
     ;
 programme:
     commande programme              {}
     | commande                      {}
     ;
+decl_args:
+    |                               {}
+    | VAR                           {}
+    | VAR VIRG decl_args            {}
+    ;
+arguments:
+    |                               {}
+    | expression                    {}
+    | expression VIRG arguments     {}
