@@ -1,15 +1,10 @@
-hello=3;
-function fibonacci(index,n1,n2)
-{
- for(i = 2; index >= i ; i++){
-    //somme des deux derniers nombres
-    somme = n1 + n2;
-    //assigner la dernière valeur à la première
-    n1 = n2;
-    //attribuer la somme au dernier
-    n2 = somme;
- }
- return somme;
+c=9;
+function fibonacci(nbr) {
+  if(2 > nbr){
+    return nbr;
+  }
+  else {
+  return fibonacci(nbr - 1) + fibonacci(nbr - 2);
+  }
 }
-a=fibonacci(5,0,1);
-ba=fibonacci(8,0,1);
+e=fibonacci(10);
