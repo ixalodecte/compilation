@@ -108,8 +108,8 @@ let rec commande_code commande =
     | Ifelse (e, t, l,_ ) -> Printf.sprintf "%s\nConJmp %n\n%s\nJump %n\n%s" (expression_code e) ((get_size_commande t)+1) (commande_code t) (get_size_commande l) (commande_code l)
     | Dowhile (c, e, _) -> Printf.sprintf "%s\n%s\n%s\n%s %i" (commande_code c) (expression_code e) "Not" "ConJmp" (-((get_size_commande c) + get_size_expression e+2))
     | While (e, c, _)   -> Printf.sprintf "%s\n%s %n\n%s\n%s %i" (expression_code e) "ConJmp" ((get_size_commande c) + 1) (commande_code c) "Jump" (-((get_size_commande c) + (get_size_expression e)+2))
-    | For (e,f,g,c,_)   -> Printf.sprintf "%s\n%s\n%s %n\n%s\n%s\n%s %i" (expression_code e) (expression_code f) "ConJmp" ((get_size_commande c) + (get_size_expression g) + 1) (commande_code c) (expression_code g) "Jump" (-((get_size_commande c) + (get_size_expression f)  + (get_size_expression g) +2))
-    | Cexpression (e,_) -> expression_code e
+    | For (e,f,g,c,_)   -> Printf.sprintf "%s\n%s\n%s\n%s %n\n%s\n%s\n%s %i" (expression_code e) "Drop" (expression_code f) "ConJmp" ((get_size_commande c) + (get_size_expression g) + 1) (commande_code c) (expression_code g) "Jump" (-((get_size_commande c) + (get_size_expression f)  + (get_size_expression g) +3))
+    | Cexpression (e,_) -> Printf.sprintf "%s\n%s" (expression_code e) "Drop"
     | Group (p,_) -> programme_code p
     | Ptvirg -> "Noop"
 and
