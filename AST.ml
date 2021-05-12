@@ -154,7 +154,7 @@ let rec expression_code expression =
    | Num    n    -> Printf.sprintf "%s %f" "CsteNb" n
    | Bool    b    -> Printf.sprintf "%s %B" "CsteBo" b
    | Var    s    -> Printf.sprintf "%s %s" "GetVar" s
-   | Call (v,a,_)   -> Printf.sprintf "%s %s\n%s\n%s" "GetVar" v (args_code a) "Call"
+   | Call (v,a,_)   -> Printf.sprintf "%s %s\n%s\n%s\n%s" "GetVar" v "SrtCal" (args_code a) "Call"
 and
 args_code args =
    match args with

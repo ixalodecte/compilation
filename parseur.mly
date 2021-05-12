@@ -36,7 +36,7 @@ expression:
     | expression MOINS expression   { Moins($1,$3, (get_size_expression $1) + (get_size_expression $3) + 1 + size_convert_to_num*2) }
     | expression FOIS expression    { Mult($1,$3, (get_size_expression $1) + (get_size_expression $3) + 1 + size_convert_to_num*2) }
     | expression DIV expression     { Div($1, $3, (get_size_expression $1) + (get_size_expression $3) + 1 + size_convert_to_num*2) }
-    | VAR GPAREN arguments DPAREN   { Call ($1, $3,(get_size_arguments $3) + 2) }
+    | VAR GPAREN arguments DPAREN   { Call ($1, $3,(get_size_arguments $3) + 3) }
     | GPAREN expression DPAREN      { $2 }
     | MOINS expression %prec UMOINS { Neg ($2, (get_size_expression $2) + 1 + size_convert_to_num) }
     | VAR INCREM                    { Incr $1 }
