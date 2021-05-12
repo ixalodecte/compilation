@@ -67,6 +67,8 @@ get_size_commande commande =
 
 (* Fonctions d'affichage *)
 
+
+
 let rec expression_code expression =
    match expression with
    | Affect (v,e,_) -> Printf.sprintf "%s\n%s %s\n%s %s" (expression_code e) "SetVar" v "GetVar" v
@@ -75,8 +77,16 @@ let rec expression_code expression =
    | Mult  (g,d,_) -> Printf.sprintf "%s\n%s\n%s" (expression_code g) (expression_code d) "MultNb"
    | Div  (g,d,_) -> Printf.sprintf "%s\n%s\n%s" (expression_code g) (expression_code d) "DiviNb"
    | Sup  (g,d,_) -> Printf.sprintf "%s\n%s\n%s" (expression_code g) (expression_code d) "GrStNb"
-   | And  (g,d,_) -> Printf.sprintf "%s\n%s %n\n%s\n%s\n%s" (expression_code g) "ConJmp" ((get_size_expression d)+1) (expression_code d) "Jump 1" "CstBo False"
-   | Or  (g,d,_) -> Printf.sprintf "%s\n%s\n%s\n%s %n\n%s" (expression_code g) "ConJmp 2" "CstBo True" "Jump 1" (get_size_expression d) (expression_code d)
+   | And  (g,d,_) -> Printf.sprintf "%s\n%s %n\n%s\n%s\n%s" (expression_code g)
+                                                            "ConJmp" ((get_size_expression d)+1)
+                                                            (expression_code d)
+                                                            "Jump 1"
+                                                            "CstBo False"
+   | Or  (g,d,_) -> Printf.sprintf "%s\n%s\n%s\n%s %n\n%s" (expression_code g)
+                                                            "ConJmp 2"
+                                                            "CstBo True"
+                                                            "Jump" (get_size_expression d)
+                                                            (expression_code d)
    | Sup_egal  (g,d,_) -> Printf.sprintf "%s\n%s\n%s" (expression_code g) (expression_code d) "GrEqNb"
    | Egal  (g,d,_) -> Printf.sprintf "%s\n%s\n%s" (expression_code g) (expression_code d) "Equals"
    | Neg    (e,_)    -> Printf.sprintf "%s\n%s" (expression_code e) "NegaNb"
