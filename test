@@ -4,8 +4,7 @@ n1 = 0;
 n2 = 1;
 somme = 0;
 if (test == 0){
-    a=true + false + true -true*10 +9 >= true;
-    b=1;
+    a=1&&7;
  }
 else
   a=0;

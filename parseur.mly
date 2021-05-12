@@ -25,8 +25,8 @@ main:
     ;
 expression:
     VAR AFFECT expression   { Affect($1, $3, (get_size_expression $3) + 2)}
-    | expression OR expression        { Or($1, $3, (get_size_expression $1) + (get_size_expression $3) + 3)}
-    | expression AND expression        { And($1, $3, (get_size_expression $1) + (get_size_expression $3) + 3)}
+    | expression OR expression        { Or($1, $3, (get_size_expression $1) + (get_size_expression $3) + 3 + size_convert_to_bool)}
+    | expression AND expression        { And($1, $3, (get_size_expression $1) + (get_size_expression $3) + 2 + size_convert_to_bool)}
     | expression EGAL expression      { Egal($1, $3, (get_size_expression $1) + (get_size_expression $3) + 1 + size_convert_to_num*2)}
     | expression SUP expression     { Sup($1, $3, (get_size_expression $1) + (get_size_expression $3) + 1 + size_convert_to_num*2) }
     | expression SUP_EGAL expression { Sup_egal($1, $3, (get_size_expression $1) + (get_size_expression $3) + 1 + size_convert_to_num*2) }
@@ -37,7 +37,7 @@ expression:
     | GPAREN expression DPAREN      { $2 }
     | MOINS expression %prec UMOINS { Neg ($2, (get_size_expression $2) + 1 + size_convert_to_num) }
     | VAR INCREM                    { Incr $1 }
-    | NON expression                { Non ($2, (get_size_expression $2) + 1) }
+    | NON expression                { Non ($2, (get_size_expression $2) + 1 + size_convert_to_bool) }
     | NOMBRE                        { Num $1 }
     | BOOL                          { Bool $1 }
     | VAR                           { Var $1 }
