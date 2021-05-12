@@ -27,7 +27,7 @@ expression:
     VAR AFFECT expression   { Affect($1, $3, (get_size_expression $3) + 2)}
     | expression OR expression        { Or($1, $3, (get_size_expression $1) + (get_size_expression $3) + 3)}
     | expression AND expression        { And($1, $3, (get_size_expression $1) + (get_size_expression $3) + 3)}
-    | expression EGAL expression      { Egal($1, $3, (get_size_expression $1) + (get_size_expression $3) + 1)}
+    | expression EGAL expression      { Egal($1, $3, (get_size_expression $1) + (get_size_expression $3) + 1 + size_convert_to_num*2)}
     | expression SUP expression     { Sup($1, $3, (get_size_expression $1) + (get_size_expression $3) + 1 + size_convert_to_num*2) }
     | expression SUP_EGAL expression { Sup_egal($1, $3, (get_size_expression $1) + (get_size_expression $3) + 1 + size_convert_to_num*2) }
     | expression PLUS expression    { Plus($1, $3, (get_size_expression $1) + (get_size_expression $3) + 1 + size_convert_to_num*2)}
