@@ -31,6 +31,9 @@ programme_a =
     | Pcommande of commande_a * int
 ;;
 
+let convert_to_num = "TypeOf\nCase\nBoToNumber\nNoop";;
+let size_convert_to_num = 4;;
+
 let get_size_expression expression =
    match expression with
    | Affect (_,_,i) -> i
@@ -45,7 +48,7 @@ let get_size_expression expression =
    | Egal  (_,_,i) -> i
    | Neg    (_,i)   -> i
    | Non    (_,i)    -> i
-   | Incr   _    -> 5
+   | Incr   _    -> 5 + size_convert_to_num*3
    | Num    _    -> 1
    | Bool    _    -> 1
    | Var    _    -> 1;;
@@ -67,16 +70,14 @@ get_size_commande commande =
 
 (* Fonctions d'affichage *)
 
-
-
 let rec expression_code expression =
    match expression with
    | Affect (v,e,_) -> Printf.sprintf "%s\n%s %s\n%s %s" (expression_code e) "SetVar" v "GetVar" v
-   | Plus  (g,d,_) -> Printf.sprintf "%s\n%s\n%s" (expression_code g) (expression_code d) "AddiNb"
-   | Moins (g,d,_) -> Printf.sprintf "%s\n%s\n%s" (expression_code g) (expression_code d) "SubiNb"
-   | Mult  (g,d,_) -> Printf.sprintf "%s\n%s\n%s" (expression_code g) (expression_code d) "MultNb"
-   | Div  (g,d,_) -> Printf.sprintf "%s\n%s\n%s" (expression_code g) (expression_code d) "DiviNb"
-   | Sup  (g,d,_) -> Printf.sprintf "%s\n%s\n%s" (expression_code g) (expression_code d) "GrStNb"
+   | Plus  (g,d,_) -> Printf.sprintf "%s\n%s\n%s\n%s\n%s" (expression_code g) convert_to_num (expression_code d) convert_to_num "AddiNb"
+   | Moins (g,d,_) -> Printf.sprintf "%s\n%s\n%s\n%s\n%s" (expression_code g) convert_to_num (expression_code d) convert_to_num "SubiNb"
+   | Mult  (g,d,_) -> Printf.sprintf "%s\n%s\n%s\n%s\n%s" (expression_code g) convert_to_num (expression_code d) convert_to_num "MultNb"
+   | Div  (g,d,_) -> Printf.sprintf "%s\n%s\n%s\n%s\n%s" (expression_code g) convert_to_num (expression_code d) convert_to_num "DiviNb"
+   | Sup  (g,d,_) -> Printf.sprintf "%s\n%s\n%s\n%s\n%s" (expression_code g) convert_to_num (expression_code d) convert_to_num "GrStNb"
    | And  (g,d,_) -> Printf.sprintf "%s\n%s %n\n%s\n%s\n%s" (expression_code g)
                                                             "ConJmp" ((get_size_expression d)+1)
                                                             (expression_code d)
@@ -87,11 +88,11 @@ let rec expression_code expression =
                                                             "CstBo True"
                                                             "Jump" (get_size_expression d)
                                                             (expression_code d)
-   | Sup_egal  (g,d,_) -> Printf.sprintf "%s\n%s\n%s" (expression_code g) (expression_code d) "GrEqNb"
+   | Sup_egal  (g,d,_) -> Printf.sprintf "%s\n%s\n%s\n%s\n%s" (expression_code g) convert_to_num (expression_code d) convert_to_num "GrEqNb"
    | Egal  (g,d,_) -> Printf.sprintf "%s\n%s\n%s" (expression_code g) (expression_code d) "Equals"
-   | Neg    (e,_)    -> Printf.sprintf "%s\n%s" (expression_code e) "NegaNb"
+   | Neg    (e,_)    -> Printf.sprintf "%s\n%s\n%s" (expression_code e) convert_to_num "NegaNb"
    | Non    (e,_)    -> Printf.sprintf "%s\n%s" (expression_code e) "Not"
-   | Incr   v    -> Printf.sprintf "%s\n%s\n%s %s" (expression_code (Var v)) (expression_code (Plus(Var v, Num 1.,1))) "SetVar" v
+   | Incr   v    -> Printf.sprintf "%s\n%s\n%s\n%s %s" (expression_code (Var v)) convert_to_num (expression_code (Plus(Var v, Num 1.,1))) "SetVar" v
    | Num    n    -> Printf.sprintf "%s %f" "CsteNb" n
    | Bool    b    -> Printf.sprintf "%s %B" "CsteBo" b
    | Var    s    -> Printf.sprintf "%s %s" "GetVar" s;;
