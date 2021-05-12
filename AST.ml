@@ -34,6 +34,7 @@ programme_a =
 let convert_to_num = "TypeOf\nCase\nBoToNumber\nNoop";;
 let size_convert_to_num = 4;;
 
+
 let get_size_expression expression =
    match expression with
    | Affect (_,_,i) -> i
@@ -89,7 +90,7 @@ let rec expression_code expression =
                                                             "Jump" (get_size_expression d)
                                                             (expression_code d)
    | Sup_egal  (g,d,_) -> Printf.sprintf "%s\n%s\n%s\n%s\n%s" (expression_code g) convert_to_num (expression_code d) convert_to_num "GrEqNb"
-   | Egal  (g,d,_) -> Printf.sprintf "%s\n%s\n%s" (expression_code g) (expression_code d) "Equals"
+   | Egal  (g,d,_) -> Printf.sprintf "%s\n%s\n%s\n%s\n%s" (expression_code g) convert_to_num (expression_code d) convert_to_num "Equals"
    | Neg    (e,_)    -> Printf.sprintf "%s\n%s\n%s" (expression_code e) convert_to_num "NegaNb"
    | Non    (e,_)    -> Printf.sprintf "%s\n%s" (expression_code e) "Not"
    | Incr   v    -> Printf.sprintf "%s\n%s\n%s\n%s %s" (expression_code (Var v)) convert_to_num (expression_code (Plus(Var v, Num 1.,1))) "SetVar" v
