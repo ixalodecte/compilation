@@ -14,6 +14,7 @@ type expression_a =
     | Non of expression_a * int
     | Bool of bool
     | Var of string
+    | Undef of string
     | Incr of string
     ;;
 
@@ -56,6 +57,7 @@ let get_size_expression expression =
    | Incr   _    -> 5 + size_convert_to_num*3
    | Num    _    -> 1
    | Bool    _    -> 1
+   | Undef _      -> 1
    | Var    _    -> 1;;
 
 let rec get_size_programme programme =
@@ -99,6 +101,7 @@ let rec expression_code expression =
    | Neg    (e,_)    -> Printf.sprintf "%s\n%s\n%s" (expression_code e) convert_to_num "NegaNb"
    | Non    (e,_)    -> Printf.sprintf "%s\n%s\n%s" (expression_code e) convert_to_bool "Not"
    | Incr   v    -> Printf.sprintf "%s\n%s\n%s\n%s %s" (expression_code (Var v)) convert_to_num (expression_code (Plus(Var v, Num 1.,1))) "SetVar" v
+   | Undef u     -> "CsteUn"
    | Num    n    -> Printf.sprintf "%s %f" "CsteNb" n
    | Bool    b    -> Printf.sprintf "%s %B" "CsteBo" b
    | Var    s    -> Printf.sprintf "%s %s" "GetVar" s;;
