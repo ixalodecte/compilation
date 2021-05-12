@@ -33,6 +33,7 @@ rule token = parse
 		| "while"       { WHILE }
 		| "for"         { FOR }
 		| "undefined"   { UNDEF }
+		| "NaN"         { NAN }
 		| (['a'-'z']| ['A'-'Z'])(['a'-'z'] | ['A'-'Z'] | '_' | ['0'-'9'])*  as lexem  { VAR(lexem) }
 		| '='           { AFFECT }
 		| '{'           { GACC }

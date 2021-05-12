@@ -15,6 +15,7 @@ type expression_a =
     | Bool of bool
     | Var of string
     | Undef of string
+    | Nan of string
     | Incr of string
     ;;
 
@@ -32,12 +33,29 @@ programme_a =
     | Pcommande of commande_a * int
 ;;
 
-let convert_to_num = "TypeOf\nCase\nBoToNumber\nNoop";;
-let size_convert_to_num = 4;;
+let convert_to_num = String.concat "\n" ["TypeOf";
+                                        "Case 2";
+                                        "BoToNumber";
+                                        "Jump 6";
+                                        "Noop";
+                                        "Jump 4";
+                                        "Noop";
+                                        "Jump 2";
+                                        "Drop";
+                                        "CsteNb NaN"];;
+let size_convert_to_num = 10;;
 
-
-let convert_to_bool = "TypeOf\nCase\nNoop\nNbToBe";;
-let size_convert_to_bool = 4;;
+let convert_to_bool = String.concat "\n" ["TypeOf";
+                                        "Case 2";
+                                        "Noop";
+                                        "Jump 6";
+                                        "NbToBe";
+                                        "Jump 4";
+                                        "Noop";
+                                        "Jump 2";
+                                        "Drop";
+                                        "CsteNb NaN"];;
+let size_convert_to_bool = 10;;
 
 
 let get_size_expression expression =
@@ -54,6 +72,7 @@ let get_size_expression expression =
    | Egal  (_,_,i) -> i
    | Neg    (_,i)   -> i
    | Non    (_,i)    -> i
+   | Nan _       -> 1
    | Incr   _    -> 5 + size_convert_to_num*3
    | Num    _    -> 1
    | Bool    _    -> 1
@@ -102,6 +121,7 @@ let rec expression_code expression =
    | Non    (e,_)    -> Printf.sprintf "%s\n%s\n%s" (expression_code e) convert_to_bool "Not"
    | Incr   v    -> Printf.sprintf "%s\n%s\n%s\n%s %s" (expression_code (Var v)) convert_to_num (expression_code (Plus(Var v, Num 1.,1))) "SetVar" v
    | Undef u     -> "CsteUn"
+   | Nan u     -> "CsteNb NaN"
    | Num    n    -> Printf.sprintf "%s %f" "CsteNb" n
    | Bool    b    -> Printf.sprintf "%s %B" "CsteBo" b
    | Var    s    -> Printf.sprintf "%s %s" "GetVar" s;;

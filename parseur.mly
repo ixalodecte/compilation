@@ -6,7 +6,7 @@
 %token <bool> BOOL
 %token <string> VAR
 
-%token EGAL SUP_EGAL SUP NON PLUS MOINS FOIS DIV GPAREN DPAREN PT_VIRG VAR AFFECT END IF ELSE EOF GACC DACC AND OR DO WHILE INCREM FOR UNDEF
+%token EGAL SUP_EGAL SUP NON PLUS MOINS FOIS DIV GPAREN DPAREN PT_VIRG VAR AFFECT END IF ELSE EOF GACC DACC AND OR DO WHILE INCREM FOR UNDEF NAN
 %right AFFECT
 %left OR
 %left AND
@@ -39,6 +39,7 @@ expression:
     | VAR INCREM                    { Incr $1 }
     | NON expression                { Non ($2, (get_size_expression $2) + 1 + size_convert_to_bool) }
     | UNDEF                         { Undef "undefined"}
+    | NAN                           { Nan "NaN" }
     | NOMBRE                        { Num $1 }
     | BOOL                          { Bool $1 }
     | VAR                           { Var $1 }
