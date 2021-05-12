@@ -2,7 +2,8 @@ test = 0;
 n1 = 0;
 n2 = 1;
 somme = 0;
-if (test == 0)
+function e (somme)
+{
  for(i = 2; 10 >= i ; i++){
     //somme des deux derniers nombres
     somme = n1 + n2;
@@ -11,5 +12,6 @@ if (test == 0)
     //attribuer la somme au dernier
     n2 = somme;
  }
-else
-  bbb=0;
+
+e (somme);
+x();
